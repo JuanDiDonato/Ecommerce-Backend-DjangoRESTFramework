@@ -1,9 +1,8 @@
-from django.db.models import fields
+# Rest framework
 from rest_framework import serializers
 
 # Models
 from apps.mod.models import Statistic, MonthlyStatistic, PendingShipments, Status
-
 
 # Statistics serializer
 class StatisticSerializer(serializers.ModelSerializer):

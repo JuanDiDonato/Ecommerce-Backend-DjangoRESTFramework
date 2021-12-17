@@ -1,9 +1,9 @@
+# DJango
 from django.db import models
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.db.models.fields import AutoField, BooleanField, CharField, FloatField, IntegerField, TextField, DateField
 from django.db.models.fields.files import ImageField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
-
 
 # Events model
 class Event(models.Model):
@@ -40,8 +40,9 @@ class Product(models.Model):
     title = CharField(max_length=255,unique=True,null=False,blank=False)
     description = TextField(null=True,blank=False)
     price = FloatField(max_length=255,null=True,blank=False,default=0)
-    image = ImageField(upload_to='assets/img/',null=True,blank=True)
+    # image = ImageField(upload_to='products',null=True,blank=True)
     disable = BooleanField(default=False)
+    created_at = DateField(auto_now=False,auto_now_add=True)
     category = ForeignKey(Category,on_delete=SET_NULL,null=True)
     event = ForeignKey(Event,on_delete=SET_NULL,null=True)
     ids_colors = ManyToManyField('Colors',blank=True)
@@ -52,6 +53,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+# Images
+class Images(models.Model):
+    image = ImageField(upload_to='products',null=True)
+    product = ForeignKey(Product,on_delete=CASCADE, null=True, related_name='images')
+
+    class Meta:
+        verbose_name = 'image'
+        verbose_name_plural = 'images'
+    
+    def __str__(self):
+        return str(self.image)
 
 # Colors 
 class Colors(models.Model):

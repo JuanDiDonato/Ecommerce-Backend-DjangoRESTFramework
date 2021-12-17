@@ -1,10 +1,9 @@
-import re
-from rest_framework import serializers, validators, viewsets, status
+# Rest framework
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 # Serializers
 from apps.mod.api.serializers import StatisticSerializer, MonthlyStatisticSerializer, PendingShipmentsSerializer
-
 
 # Pending shipments
 class PendingShipmentsViewSet(viewsets.ModelViewSet):
@@ -38,7 +37,6 @@ class StatisticViewSet(viewsets.GenericViewSet):
             statistic.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response({'message':'No hay estadisticas'},status=status.HTTP_400_BAD_REQUEST)
-
 
 # Monthly statistics
 class MonthlyStatisticViewSet(viewsets.GenericViewSet):

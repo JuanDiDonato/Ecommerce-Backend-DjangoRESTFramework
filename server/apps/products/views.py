@@ -1,9 +1,16 @@
+# Rest framework
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+
+"""
+Authentication for tokens in headers
+"""
 # from rest_framework.permissions import IsAuthenticated
 
 # Serializers
-from apps.products.api.serializers import ColorsSerializer, ProductSerializer, EventSerializer, CategorySerializer, WaistSerializer
+from apps.products.api.serializers import (ColorsSerializer, ProductSerializer, 
+    EventSerializer, CategorySerializer, 
+    WaistSerializer, ImageSerializer)
 
 # Categories
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -82,33 +89,38 @@ class WaistViewSet(viewsets.ModelViewSet):
     serializer_class = WaistSerializer
     queryset = WaistSerializer.Meta.model.objects.all()
 
-"""
-# Waist and colors
-class WaistAndColorViewSet(viewsets.ModelViewSet):
-    serializer_class = WaistAndColorSerializer
-    
-    def get_queryset(self,pk=None):
-        if not pk:
-            return self.get_serializer().Meta.model.objects.all()
-        else :
-            return self.get_serializer().Meta.model.objects.filter(id=pk).first()
+# Images
+class ImagesViewSet(viewsets.GenericViewSet):
+    serializer_class = ImageSerializer
 
-    def create(self,request):
-        serializer = self.serializer_class(data=request.data)
+    def get_queryset(self, pk=None):
+        if pk:
+            return self.get_serializer().Meta.model.objects.filter(product=pk)
+        else:
+            return self.get_serializer().Meta.model.objects.all()
+
+
+    def list(self, request):
+        product = None
+        if request.GET:
+            product = request.GET['product']
+
+        if product:
+            image_serializer = self.get_serializer(self.get_queryset(product),many=True)
+        else:
+            image_serializer = self.get_serializer(self.get_queryset(),many=True)
+        return Response(image_serializer.data,status=status.HTTP_200_OK)
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)     
         if serializer.is_valid():
             serializer.save()
-            return Response({'error':False},status=status.HTTP_201_CREATED)
-        return Response({'error':True, 'message':serializer.errors },status=status.HTTP_400_BAD_REQUEST)
-    
-    def update(self,request,pk=None,*args,**kwargs):
-        waist_and_color = self.get_queryset(pk)
-        if waist_and_color:
-            waist_and_color_serializer = self.get_serializer(waist_and_color,data=request.data)
-            if waist_and_color_serializer.is_valid():
-                waist_and_color_serializer.save()
-                return Response({'message':'Color y talles actualizados.'},status=status.HTTP_200_OK)
-        return Response({'message':'Datos no encontrados.'},status=status.HTTP_400_BAD_REQUEST)
-"""
+            return Response({'message': 'Foto agregada!'},status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-
-
+    def destroy(self,request,pk=None):
+        image = self.get_queryset().filter(id=pk).first() # get instance        
+        if image:
+            image.delete()
+            return Response({'message':'Operacion completada.'},status=status.HTTP_200_OK)
+        return Response({'error':'La imagen no existe.'},status=status.HTTP_400_BAD_REQUEST)

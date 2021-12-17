@@ -1,7 +1,10 @@
+# DJango
 from django.db import models
 from django.db.models.deletion import CASCADE, SET_DEFAULT, SET_NULL
 from django.db.models.fields import AutoField, CharField, DateField, FloatField, IntegerField
-from django.db.models.fields.related import ForeignKey, ManyToManyField
+from django.db.models.fields.related import ForeignKey
+
+# Models
 from apps.products.models import Product
 from apps.users.models import User
 

@@ -1,5 +1,7 @@
+# Rest framework serializers
 from rest_framework import serializers
 
+# Simple JWT 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # Models

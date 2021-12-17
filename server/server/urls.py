@@ -1,13 +1,23 @@
+# Django
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.conf import settings
+from django.conf.urls.static import static
+
+# Rest framework
 from rest_framework import permissions
+
+# Swagger
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+# Simple JWT
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
+# Views
 from apps.users.views import Login, Logout, RefreshTokenView
 
 # Swagger
@@ -37,3 +47,6 @@ urlpatterns = [
     path('products/',include('apps.products.api.routers')),
     path('mod/',include('apps.mod.api.routers'))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

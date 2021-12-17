@@ -1,10 +1,10 @@
-from enum import auto
+# DJango
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models.deletion import SET_NULL
 from django.db.models.fields import CharField
 
-
+# User
 class UserManager(BaseUserManager):
     
     def create_user(self,email,username,password):

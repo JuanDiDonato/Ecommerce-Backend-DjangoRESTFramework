@@ -1,4 +1,6 @@
+# Rest framework routers
 from rest_framework.routers import DefaultRouter
+
 # ViewSets
 from apps.client.views import ShoppingCartViewSet, ShoppingHistoryViewSet
 

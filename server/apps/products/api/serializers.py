@@ -1,9 +1,9 @@
-from django.db import models
+# Rest framework serializers
 from django.db.models import fields
 from rest_framework import serializers
 
 # Models
-from apps.products.models import Product, Event, Category, Colors, Waist
+from apps.products.models import Product, Event, Category, Colors, Waist, Images
 
 # Colors serializer
 class ColorsSerializer(serializers.ModelSerializer):
@@ -30,7 +30,13 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
-    
+
+# Images serializers
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Images
+        fields = '__all__'
+
 # Product serialzier
 class ProductSerializer(serializers.ModelSerializer):
 
@@ -49,7 +55,15 @@ class ProductSerializer(serializers.ModelSerializer):
         dict['stock_xxxl'] = attribute.stock_xxxl
         return dict
 
+    def get_images(self,instance):
+        image_list = []
+        images = ImageSerializer.Meta.model.objects.filter(product=instance.id)
+        for image in images:
+            image_list.append(f'media/{str(image)}')
+        return image_list
+
     def to_representation(self, instance):
+
         fields = self._readable_fields
         list = []
         for field in fields:
@@ -63,9 +77,10 @@ class ProductSerializer(serializers.ModelSerializer):
             'title':instance.title,
             'description':instance.description,
             'price':instance.price,
-            'image':str(instance.image) if instance.image is not None else "",
+            'images': self.get_images(instance),
             'category':instance.category.category_name if instance.category is not None else "",
             'disable':instance.disable,
+            'created_ad':instance.created_at,
             'event': {
                 'name':instance.event.name if instance.event is not None else "",
                 'discount':instance.event.discount if instance.event is not None else "",

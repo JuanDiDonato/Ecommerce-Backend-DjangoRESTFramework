@@ -1,19 +1,10 @@
-# cookieapp/authenticate.py
-from rest_framework_simplejwt.authentication import JWTAuthentication
+# Settings of DJango
 from django.conf import settings
 
-from rest_framework.authentication import CSRFCheck
-from rest_framework import exceptions
+# Simple JWT
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
-"""
-def enforce_csrf(request):
-    check = CSRFCheck()
-    check.process_request(request)
-    reason = check.process_view(request, None, (), {})
-    if reason:
-        raise exceptions.PermissionDenied('CSRF Failed: %s' % reason)
-"""
-
+# Clase para verificar los tokens en la cookie
 class CookieAuthentication(JWTAuthentication):
     def authenticate(self, request):
         header = self.get_header(request)

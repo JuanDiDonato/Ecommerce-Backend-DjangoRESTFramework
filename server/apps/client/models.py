@@ -1,9 +1,8 @@
+# DJango
 from django.db import models
 from django.db.models.deletion import CASCADE, SET_NULL
-from django.db.models.expressions import F
 from django.db.models.fields import AutoField, CharField, DateField, IntegerField
-from django.db.models.fields.files import ImageField
-from django.db.models.fields.related import ForeignKey, ManyToManyField
+from django.db.models.fields.related import ForeignKey
 
 # Models
 from apps.products.models import Product

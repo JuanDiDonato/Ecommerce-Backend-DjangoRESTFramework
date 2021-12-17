@@ -1,5 +1,5 @@
-from re import U
-from rest_framework import serializers, viewsets, status
+# Rest framework
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 #Serializers

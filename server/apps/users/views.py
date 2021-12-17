@@ -67,6 +67,8 @@ class Login(TokenObtainPairView):
 class Logout(GenericAPIView):
 
     """
+    **Tokens en headers
+
     Para el logout, primero obtengo el usuario.
     Si existe, refresco su token, pero no lo retorno ni lo seteo.
     """
@@ -74,7 +76,9 @@ class Logout(GenericAPIView):
         response = Response()
         user = User.objects.filter(id=request.data.get('user',0))
         if user.exists():
-            """           
+            """        
+            For tokens in headers 
+
             RefreshToken.for_user(user.first())
             """
             # Para cerrar sesion, borro lo cookie
