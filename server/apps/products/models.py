@@ -74,8 +74,8 @@ class Colors(models.Model):
     id_talle = ForeignKey('Waist',on_delete=CASCADE,null=True,blank=True)
     
     class Meta:
-        verbose_name = 'Waist and color'
-        verbose_name_plural = 'Waists and colors'
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colors'
 
     def __str__(self):
         return f'{self.color}'

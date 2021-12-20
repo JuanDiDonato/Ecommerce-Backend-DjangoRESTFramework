@@ -8,7 +8,16 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from apps.users.models import User
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    pass
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token['role'] = str(user.role)
+
+        return token
+
 
 # Serializer for create, edit, and delete users
 class UserSerializer(serializers.ModelSerializer):

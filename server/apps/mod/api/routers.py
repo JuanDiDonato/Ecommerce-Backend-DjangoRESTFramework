@@ -1,6 +1,7 @@
 # Rest framework routers
 from rest_framework.routers import DefaultRouter
 
+
 # ViewSets
 from apps.mod.views import PendingShipmentsViewSet, StatisticViewSet, MonthlyStatisticViewSet
 

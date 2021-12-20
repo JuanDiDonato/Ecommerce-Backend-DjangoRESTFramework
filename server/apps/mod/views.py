@@ -1,6 +1,9 @@
 # Rest framework
-from rest_framework import viewsets, status
+from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
+
+# Authentication
+from apps.users.authenticate import RoleAuthentication
 
 # Serializers
 from apps.mod.api.serializers import StatisticSerializer, MonthlyStatisticSerializer, PendingShipmentsSerializer
@@ -8,11 +11,13 @@ from apps.mod.api.serializers import StatisticSerializer, MonthlyStatisticSerial
 # Pending shipments
 class PendingShipmentsViewSet(viewsets.ModelViewSet):
     serializer_class = PendingShipmentsSerializer
+    permission_classes = (RoleAuthentication,)
     queryset = PendingShipmentsSerializer.Meta.model.objects.all()
 
 # Statistics
 class StatisticViewSet(viewsets.GenericViewSet):
     serializer_class = StatisticSerializer
+    permission_classes = (RoleAuthentication,)
         
     def get_queryset(self,pk=None):
         return self.get_serializer().Meta.model.objects.all()
@@ -41,6 +46,7 @@ class StatisticViewSet(viewsets.GenericViewSet):
 # Monthly statistics
 class MonthlyStatisticViewSet(viewsets.GenericViewSet):
     serializer_class = MonthlyStatisticSerializer
+    permission_classes = (RoleAuthentication,)
 
     def get_queryset(self,pk=None):
         return self.get_serializer().Meta.model.objects.all()

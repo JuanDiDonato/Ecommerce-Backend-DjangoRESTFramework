@@ -44,16 +44,6 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
-    def list_color_and_waists(self,attribute):
-        dict = {}
-        dict['color'] = attribute.color
-        dict['stock_s'] = attribute.stock_s
-        dict['stock_m'] = attribute.stock_m
-        dict['stock_l'] = attribute.stock_l
-        dict['stock_xl'] = attribute.stock_xl
-        dict['stock_xxl'] = attribute.stock_xxl
-        dict['stock_xxxl'] = attribute.stock_xxxl
-        return dict
 
     def get_images(self,instance):
         image_list = []
@@ -62,16 +52,28 @@ class ProductSerializer(serializers.ModelSerializer):
             image_list.append(f'media/{str(image)}')
         return image_list
 
+    def get_stock_for_colors(self,attribute):
+        dict = {}
+        dict['color'] = str(attribute)
+        dict['stock_s'] = attribute.id_talle.stock_s
+        dict['stock_m'] = attribute.id_talle.stock_m
+        dict['stock_l'] = attribute.id_talle.stock_l
+        dict['stock_xl'] = attribute.id_talle.stock_xl
+        dict['stock_xxl'] = attribute.id_talle.stock_xxl
+        dict['stock_xxxl'] = attribute.id_talle.stock_xxxl
+        return dict
+
+
     def to_representation(self, instance):
 
         fields = self._readable_fields
         list = []
         for field in fields:
-            if field.field_name == 'colors':
+            if field.field_name == 'ids_colors':
                 attributes = field.get_attribute(instance)
                 for attribute in attributes:
-                    colors = self.list_color_and_waists(attribute)
-                    list.append(colors)
+                    dict_colors = self.get_stock_for_colors(attribute)
+                    list.append(dict_colors)
         return {
             'id':instance.id,
             'title':instance.title,
@@ -87,5 +89,5 @@ class ProductSerializer(serializers.ModelSerializer):
                 'from_date':instance.event.from_date if instance.event is not None else "",
                 'to_date':instance.event.to_date if instance.event is not None else "",
             } if instance.event else "",
-            'color':list
+            'colors':list
         }

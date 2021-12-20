@@ -65,6 +65,7 @@ class Login(TokenObtainPairView):
 
 # Logout
 class Logout(GenericAPIView):
+    serializer_class = UserSerializer
 
     """
     **Tokens en headers

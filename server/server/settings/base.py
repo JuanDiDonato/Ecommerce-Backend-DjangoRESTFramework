@@ -58,10 +58,12 @@ REST_FRAMEWORK = {
         'apps.users.authenticate.CookieAuthentication',
     ),
     # Permisos para todas las vistas
-    'DEFAULT_PERMISSION_CLASSES': (
+        'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
+
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
