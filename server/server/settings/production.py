@@ -6,14 +6,16 @@ from dotenv import load_dotenv
 # Base settings
 from .base import *
 
+# Configure Django App for Heroku.
+import django_heroku
+
+django_heroku.settings(locals())
+
 load_dotenv()
 
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost'
-]
+ALLOWED_HOSTS = ["*"]
 
 STATIC_ROOT = BASE_DIR / 'media'
 
