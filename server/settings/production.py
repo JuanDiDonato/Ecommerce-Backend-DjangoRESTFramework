@@ -2,6 +2,8 @@ import os
 
 # Dotenv
 from dotenv import load_dotenv
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
 
 # Base settings
 from .base import *
@@ -30,7 +32,6 @@ DATABASES = {
     }
 }
 
-# Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
+
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
