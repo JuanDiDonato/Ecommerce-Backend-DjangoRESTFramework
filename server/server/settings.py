@@ -74,8 +74,7 @@ REST_FRAMEWORK = {
     )
 }
 
-# Whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'media'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -160,7 +159,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'media'
+
+
 MEDIA_URL = '/media/' # url
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')  # directorio
 
