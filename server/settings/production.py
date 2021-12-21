@@ -2,11 +2,24 @@ import os
 
 # Dotenv
 from dotenv import load_dotenv
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
 
 # Base settings
 from .base import *
 
+# Configure Django App for Heroku.
+import django_heroku
+
+django_heroku.settings(locals())
+
 load_dotenv()
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = BASE_DIR / 'media'
 
 # Database
 DATABASES = {
@@ -18,3 +31,7 @@ DATABASES = {
         'HOST' : os.getenv('DATABASE_HOST'),
     }
 }
+
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)

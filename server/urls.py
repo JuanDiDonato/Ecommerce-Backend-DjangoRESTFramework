@@ -6,6 +6,8 @@ from django.conf.urls.static import static
 
 # Rest framework
 from rest_framework import permissions
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny
 
 # Swagger
 from drf_yasg.views import get_schema_view
@@ -18,7 +20,7 @@ from rest_framework_simplejwt.views import (
 )
 
 # Views
-from apps.users.views import Login, Logout, RefreshTokenView
+from apps.users.views import Login, Logout, RefreshTokenView, Register
 
 # Swagger
 schema_view = get_schema_view(
@@ -40,6 +42,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', RefreshTokenView.as_view(), name='token_refresh'),
+    path('register/',authentication_classes([])(permission_classes([AllowAny])(Register)).as_view(),name='register'),
     path('login/',Login.as_view(),name='login'),
     path('logout/',Logout.as_view(),name='logout'),
     path('admin/', admin.site.urls),
@@ -48,5 +51,4 @@ urlpatterns = [
     path('mod/',include('apps.mod.api.routers'))
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

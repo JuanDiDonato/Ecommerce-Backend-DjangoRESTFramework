@@ -21,6 +21,17 @@ from apps.users.api.serializers import UserSerializer
 # Models
 from apps.users.models import User
 
+# Register
+class Register(GenericAPIView):
+    serializer_class = UserSerializer
+
+    def post(self,request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response({'error':True, 'message':serializer.errors },status=status.HTTP_400_BAD_REQUEST)
+
 # Login
 class Login(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
