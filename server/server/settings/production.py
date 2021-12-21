@@ -8,13 +8,22 @@ from .base import *
 
 load_dotenv()
 
+DEBUG = False
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
+
+STATIC_ROOT = BASE_DIR / 'media'
+
 # Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DATABASE_NAME'),
         'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'PASSWORD': '',
         'HOST' : os.getenv('DATABASE_HOST'),
     }
 }
