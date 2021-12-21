@@ -13,7 +13,7 @@ django_heroku.settings(locals())
 
 load_dotenv()
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['https://server-python-ecommerce.herokuapp.com/']
 
