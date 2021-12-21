@@ -5,6 +5,20 @@ from pathlib import Path
 # Dotenv
 from dotenv import load_dotenv
 
+# Dotenv
+from dotenv import load_dotenv
+
+# Configure Django App for Heroku.
+import django_heroku
+
+django_heroku.settings(locals())
+
+load_dotenv()
+
+DEBUG = True
+
+ALLOWED_HOSTS = ['https://server-python-ecommerce.herokuapp.com/']
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -92,6 +106,23 @@ TEMPLATES = [
     },
 ]
 
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST' : os.getenv('DATABASE_HOST'),
+    }
+}
+
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
 WSGI_APPLICATION = 'server.wsgi.application'
 
 # Password validation
@@ -129,7 +160,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/' # url
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')  # directorio
 
@@ -169,36 +200,4 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
 }
 
-import os
 
-# Dotenv
-from dotenv import load_dotenv
-
-# Configure Django App for Heroku.
-import django_heroku
-
-django_heroku.settings(locals())
-
-load_dotenv()
-
-DEBUG = True
-
-ALLOWED_HOSTS = ['https://server-python-ecommerce.herokuapp.com/']
-
-STATIC_ROOT = BASE_DIR / 'media'
-
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST' : os.getenv('DATABASE_HOST'),
-    }
-}
-
-# Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
