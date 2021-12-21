@@ -15,7 +15,7 @@ load_dotenv()
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://server-python-ecommerce.herokuapp.com/']
+ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = BASE_DIR / 'media'
 
