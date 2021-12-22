@@ -26,24 +26,13 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.save(using=self._db)
 
-# Roles
-class Role(models.Model):
-    role = CharField(max_length=10,null=False,blank=False)
-
-    class Meta :
-        verbose_name = 'Role'
-        verbose_name_plural = 'Roles'
-    
-    def __str__(self):
-        return self.role
-
 # User model.
 class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255,unique=True,null=False,blank=False)
     username = models.CharField(max_length=255,null=False,blank=False,unique=True)
     address = models.CharField(max_length=255,null=True,blank=True)
-    role = models.ForeignKey(Role,on_delete=SET_NULL,verbose_name='Rol',null=True)
+    role = models.CharField(max_length=255,null=True,blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     objects = UserManager()

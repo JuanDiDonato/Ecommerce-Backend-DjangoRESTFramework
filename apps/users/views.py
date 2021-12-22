@@ -16,7 +16,7 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 # Serializer
 from apps.users.api.serializers import CustomTokenObtainPairSerializer
-from apps.users.api.serializers import UserSerializer
+from apps.users.api.serializers import UserSerializer, UserLogoutSerializer
 
 # Models
 from apps.users.models import User
@@ -29,7 +29,7 @@ class Register(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message':'Usuario creado con exito'},status=status.HTTP_201_CREATED)
+            return Response({'error':False, 'message':'Usuario creado con exito'},status=status.HTTP_201_CREATED)
         return Response({'error':True, 'message':serializer.errors },status=status.HTTP_400_BAD_REQUEST)
 
 # Login
@@ -61,7 +61,8 @@ class Login(TokenObtainPairView):
                 # agrego los datos del usuario y el refresh token
                 response.data = {
                     'refresh_token':login_serializer.validated_data.get('refresh'),
-                    'user':user_serializer.data
+                    'user':user_serializer.data,
+                    'error':False
                     }
                 return response
                 """
@@ -71,33 +72,20 @@ class Login(TokenObtainPairView):
                     'user':user_serializer.data
                 },status=status.HTTP_200_OK)
                 """
-            return Response({'Error':'Usuario o contraseña incorrectos'},status=status.HTTP_400_BAD_REQUEST)
-        return Response({'Error':'Usuario o contraseña incorrectos'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error':'Usuario o contraseña incorrectos'},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error':'Usuario o contraseña incorrectos'},status=status.HTTP_400_BAD_REQUEST)
 
 # Logout
 class Logout(GenericAPIView):
-    serializer_class = UserSerializer
-
-    """
-    **Tokens en headers
-
-    Para el logout, primero obtengo el usuario.
-    Si existe, refresco su token, pero no lo retorno ni lo seteo.
-    """
-    def post(self,request,*args,**kwargs):
+    serializer_class = UserLogoutSerializer
+    
+    def get(self,request,*args,**kwargs):
+        # Para cerrar sesion, borro lo cookie
         response = Response()
-        user = User.objects.filter(id=request.data.get('user',0))
-        if user.exists():
-            """        
-            For tokens in headers 
+        response.delete_cookie('access_token')
+        response.data = {'message':'Session cerrada correctamente.'}
+        return response
 
-            RefreshToken.for_user(user.first())
-            """
-            # Para cerrar sesion, borro lo cookie
-            response.delete_cookie('access_token')
-            response.data = {'message':'Session cerrada correctamente.'}
-            return response
-        return Response({'message':'A ocurrido un error inesperado.'},status=status.HTTP_400_BAD_REQUEST)
 
 class RefreshTokenView(TokenViewBase):
     serializer_class = serializers.TokenRefreshSerializer

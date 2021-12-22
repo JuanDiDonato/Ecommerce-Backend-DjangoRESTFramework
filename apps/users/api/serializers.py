@@ -18,12 +18,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
-
 # Serializer for create, edit, and delete users
 class UserSerializer(serializers.ModelSerializer):
     class Meta :
         model = User
-        fields = ('id','username','password','email','address','role')
+        fields = ('id','username','password','email','address')
 
     def create(self,validated_data):
         user = User(**validated_data)
@@ -36,3 +35,8 @@ class UserSerializer(serializers.ModelSerializer):
         updated_user.set_password(validated_data['password'])
         updated_user.save()
         return updated_user
+
+class UserLogoutSerializer(serializers.ModelSerializer):
+    class Meta : 
+        model = User
+        fields = ('username',)
