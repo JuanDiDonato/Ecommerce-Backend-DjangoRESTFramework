@@ -24,7 +24,10 @@ Steps to deploy the backend:
         Windows : enviroment_name/Scripts/activate.ps1
         
         
+        
         Linux : source enviroment_name/bin/activate
+        
+        
         
 
         Consult https://docs.python.org/es/3/tutorial/venv.html
