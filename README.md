@@ -15,12 +15,17 @@ Steps to deploy the backend:
 4- Create a virtual environment for the project:
 
         Windows : python -m venv enviroment_name
+        
+        
         Linux : python3 -m venv enviroment_name
 
 5- Activate the virtual environment:
 
         Windows : enviroment_name/Scripts/activate.ps1
+        
+        
         Linux : source enviroment_name/bin/activate
+        
 
         Consult https://docs.python.org/es/3/tutorial/venv.html
 
@@ -38,6 +43,8 @@ Steps to deploy the backend:
 9- Run project migrations:
 
         Windows: python manage.py migrate
+        
+        
         Linux: python3 manage.py migrate
 
 !- Before starting the server, verify that settings are applied in the wsgi.py, asgi.py, and manage.py files:
@@ -47,9 +54,13 @@ Steps to deploy the backend:
 10- Create a super user:
 
         Windows: python manage.py createsuperuser
+        
+        
         Linux: python3 manage.py createsuperuser
 
 11- Start the server:
 
         Windows: python manage.py runserver
+        
+        
         Linux: python3 manage.py runserver
