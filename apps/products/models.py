@@ -44,7 +44,7 @@ class Product(models.Model):
     disable = BooleanField(default=False)
     created_at = DateField(auto_now=False,auto_now_add=True)
     category = ForeignKey(Category,on_delete=SET_NULL,null=True)
-    event = ForeignKey(Event,on_delete=SET_NULL,null=True)
+    event = ForeignKey(Event,on_delete=SET_NULL,null=True,blank=True)
     ids_colors = ManyToManyField('Colors',blank=True)
 
     class Meta :

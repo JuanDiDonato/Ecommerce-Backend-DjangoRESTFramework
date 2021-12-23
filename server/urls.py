@@ -22,6 +22,8 @@ from rest_framework_simplejwt.views import (
 # Views
 from apps.users.views import Login, Logout, RefreshTokenView, Register
 
+# Permissions
+from apps.users.authenticate import RoleAuthentication
 # Swagger
 schema_view = get_schema_view(
     openapi.Info(
@@ -32,8 +34,8 @@ schema_view = get_schema_view(
       contact=openapi.Contact(email="juan_didonato@protonmail.com"),
       license=openapi.License(name="BSD License"),
    ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+   public=False,
+   permission_classes=(RoleAuthentication,),
 )
 
 urlpatterns = [

@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 # Authentication
-from apps.users.authenticate import MethodAndrRoleAuthentication
+from apps.users.authenticate import RoleAuthentication
 """
 Authentication for tokens in headers
 """
@@ -17,7 +17,7 @@ from apps.products.api.serializers import (ColorsSerializer, ProductSerializer,
 # Categories
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
-    permission_classes = (MethodAndrRoleAuthentication,)
+    permission_classes = (RoleAuthentication,)
     
     def get_queryset(self,pk=None):
         if not pk:
@@ -38,7 +38,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 # Events
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    permission_classes = (MethodAndrRoleAuthentication,)
+    permission_classes = (RoleAuthentication,)
 
     def get_queryset(self,pk=None):
         if not pk:
@@ -58,7 +58,7 @@ class EventViewSet(viewsets.ModelViewSet):
 # Products
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    permission_classes = (MethodAndrRoleAuthentication,)
+    permission_classes = (RoleAuthentication,)
     
     def get_queryset(self,pk=None):
         if not pk :
@@ -86,19 +86,19 @@ class ProductViewSet(viewsets.ModelViewSet):
 # Colors
 class ColorViewSet(viewsets.ModelViewSet):
     serializer_class = ColorsSerializer
-    permission_classes = (MethodAndrRoleAuthentication,)
+    permission_classes = (RoleAuthentication,)
     queryset = ColorsSerializer.Meta.model.objects.all()
 
 # Waist
 class WaistViewSet(viewsets.ModelViewSet):
     serializer_class = WaistSerializer
     queryset = WaistSerializer.Meta.model.objects.all()
-    permission_classes = (MethodAndrRoleAuthentication,)
+    permission_classes = (RoleAuthentication,)
 
 # Images
 class ImagesViewSet(viewsets.GenericViewSet):
     serializer_class = ImageSerializer
-    permission_classes = (MethodAndrRoleAuthentication,)
+    permission_classes = (RoleAuthentication,)
 
     def get_queryset(self, pk=None):
         if pk:
