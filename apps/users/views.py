@@ -1,3 +1,6 @@
+# OS
+import os
+
 # DJango
 from django.contrib.auth import authenticate
 from django.conf import settings
@@ -6,13 +9,19 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 # Simple JWT
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.views import TokenViewBase
 from rest_framework_simplejwt import serializers
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+
+# Mercado Pago
+import mercadopago
+
+# Dotenv
+from dotenv import load_dotenv
 
 # Serializer
 from apps.users.api.serializers import CustomTokenObtainPairSerializer
@@ -20,6 +29,8 @@ from apps.users.api.serializers import UserSerializer, UserLogoutSerializer
 
 # Models
 from apps.users.models import User
+
+load_dotenv()
 
 # Register
 class Register(GenericAPIView):
@@ -86,7 +97,7 @@ class Logout(GenericAPIView):
         response.data = {'message':'Session cerrada correctamente.'}
         return response
 
-
+# Update token
 class RefreshTokenView(TokenViewBase):
     serializer_class = serializers.TokenRefreshSerializer
 
@@ -104,3 +115,30 @@ class RefreshTokenView(TokenViewBase):
             raise InvalidToken(e.args[0])
 
         return response
+
+# MercadoPago
+
+# Agrega credenciales
+sdk = mercadopago.SDK(os.getenv('TOKEN_MP'))
+
+@api_view(['GET', 'POST'])
+def mercado_pago(request):
+
+    products = request.data['products']  # Productos
+    if request.method == 'POST':
+
+        # Crea un ítem en la preferencia
+        preference_data = {
+            "items": products,
+            # Redirecciona a estos url's luego del pago
+            'back_urls':{
+                'success': 'http://localhost:8000/products/products', 
+                'failure': 'http://localhost:8000/products/products', 
+            }, 'auto_return': 'approved',
+            'binary_mode' : True
+        }
+
+        preference_response = sdk.preference().create(preference_data)
+        preference = preference_response["response"]
+        return Response(preference['init_point'],status=status.HTTP_200_OK)
+    return Response({'message':'Method GET not allowed'},status=status.HTTP_200_OK)

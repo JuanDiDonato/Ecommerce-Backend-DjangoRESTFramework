@@ -20,7 +20,7 @@ from rest_framework_simplejwt.views import (
 )
 
 # Views
-from apps.users.views import Login, Logout, RefreshTokenView, Register
+from apps.users.views import Login, Logout, RefreshTokenView, Register, mercado_pago
 
 # Permissions
 from apps.users.authenticate import RoleAuthentication
@@ -48,6 +48,7 @@ urlpatterns = [
     path('login/',Login.as_view(),name='login'),
     path('logout/',Logout.as_view(),name='logout'),
     path('admin/', admin.site.urls),
+    path('checkout/', mercado_pago, name='checkout'),
     path('client/',include('apps.client.api.routers')),
     path('products/',include('apps.products.api.routers')),
     path('mod/',include('apps.mod.api.routers'))

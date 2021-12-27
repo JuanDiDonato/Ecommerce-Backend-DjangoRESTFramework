@@ -11,8 +11,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class CookieAuthentication(JWTAuthentication):
 
     def authenticate(self, request):
-        if request.path == '/products/products' and request.method == 'GET':
-            return True
         header = self.get_header(request)
         
         if header is None:
