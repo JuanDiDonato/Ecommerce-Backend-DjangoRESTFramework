@@ -7,6 +7,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 # Models
 from apps.users.models import User
 
+# Add claims to token
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -36,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
         updated_user.save()
         return updated_user
 
+# Serializer for logout
 class UserLogoutSerializer(serializers.ModelSerializer):
     class Meta : 
         model = User

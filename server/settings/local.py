@@ -17,7 +17,8 @@ ALLOWED_HOSTS = [
 
 STATIC_ROOT = BASE_DIR / 'media'
 
-# Database
+# Database MySQL
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -25,6 +26,16 @@ DATABASES = {
         'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': '',
         'HOST' : os.getenv('DATABASE_HOST'),
+    }
+}
+"""
+
+
+# Database SQLite3
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
